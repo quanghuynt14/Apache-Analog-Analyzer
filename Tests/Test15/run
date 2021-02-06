@@ -1,0 +1,1 @@
+../../bin/analog -t 3 -p .jpg -g anonyme.dot ../anonyme.log

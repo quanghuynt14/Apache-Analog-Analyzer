@@ -1,1 +1,1 @@
-../../bin/analog -e ../court.log
+../../analog -e ../court.log

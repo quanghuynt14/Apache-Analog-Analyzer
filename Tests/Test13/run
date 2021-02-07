@@ -1,1 +1,1 @@
-../../bin/analog -p .jpg ../anonyme.log
+../../analog -p .jpg ../anonyme.log

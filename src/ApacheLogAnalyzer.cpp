@@ -100,9 +100,11 @@ int main(int argc, char *argv[]) {
                     }
                     break;
                 case 'h':
-                    cout << "NAME: "<< endl;
-                    cout << "       analog - the apache log analyzer" << endl;
-                    cout << "OPTION:" << endl;
+                    cout << "NAME" << endl;
+                    cout << "       analog - The apache log analyzer" << endl;
+                    cout << "SYNOPSIS" << endl; 
+                    cout << "       analog [Option] nameApacheLogFile.log" << endl;
+                    cout << "OPTION" << endl;
                     cout << "       -e" << endl;
                     cout << "          Exclude all of file image, style, javascript in URL" << endl;
                     cout << "       -g nameFile.dot" << endl;

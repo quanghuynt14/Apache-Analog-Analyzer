@@ -1,3 +1,15 @@
+/*************************************************************************
+                           ApacheLogAnalyzer  -  description
+                             -------------------
+    début                : 20/01/2021
+    copyright            : (C) 2021 par Francine Jin et Tran Quang Huy
+    e-mail               : jinfrancine@hotmail.com
+*************************************************************************/
+
+//---------- Réalisation de la classe <ApacheLogAnalyzer> (fichier ApacheLogAnalyzer.cpp) ------------
+
+//---------------------------------------------------------------- INCLUDE
+//-------------------------------------------------------- Include système
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -5,10 +17,10 @@
 #include <cstdlib>
 using namespace std;
 
+//------------------------------------------------------ Include personnel
 #include <regex>
 #include "Request.h"
 #include "Graph.h"
-
 
 int main(int argc, char *argv[]) {
 
@@ -26,7 +38,7 @@ int main(int argc, char *argv[]) {
     } else {
         int i = 0;
         while (++i < argc) {
-            //cout << i << " " << argv[i] << endl;
+
             if (argv[i][0] == '-') {
                 switch (argv[i][1])
                 {
@@ -87,6 +99,23 @@ int main(int argc, char *argv[]) {
                         return 10;
                     }
                     break;
+                case 'h':
+                    cout << "NAME: "<< endl;
+                    cout << "       analog - the apache log analyzer" << endl;
+                    cout << "OPTION:" << endl;
+                    cout << "       -e" << endl;
+                    cout << "          Exclude all of file image, style, javascript in URL" << endl;
+                    cout << "       -g nameFile.dot" << endl;
+                    cout << "          Create a dot file nameFile.dot contains infomations to print a graph" << endl;
+                    cout << "          Commande print a graph: dot -Tpng -o nameFile.png nameFile.dot" << endl;
+                    cout << "       -t hour" << endl;
+                    cout << "          Only analyze requests in time frames [hour, hour+1[" << endl;
+                    cout << "       -p typeExtension" << endl;
+                    cout << "          Only analyze requests that the URL contains typeExtension" << endl;
+                    cout << "       -h" << endl;
+                    cout << "          Print manual use" << endl;
+                    return 0;
+                    break;
                 default:
                     cerr << "Error command" << endl;
                     return 6;
@@ -107,30 +136,33 @@ int main(int argc, char *argv[]) {
     string readLine = "";
 
     if (fileStream.is_open()) {
-        //cout << "Opened file: " << logFileName << endl;
+
         // IP dois etre integer 0-255
         string ip_0_255 = "([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
+
         // day dois etre integer 0-31
         string day = "(0?[1-9]|[12]\\d|3[01])";
-        // hour dois etre integer 00-23 ou == timeSelected 
+
+        // hour dois etre nombre integer entre 00-23 ou egale timeSelected si option -t 
         string hour = (timeSelected != "")?timeSelected:"([01][0-9]|2[0-3])";
         
-        // minute et second doivent etre integer 00-59
+        // minute et second doivent etre nombre integer entre 00-59
         string mi_se = "([0-5][0-9])";
 
+        // Regular expressions of one line in apache log file
         regex regLine("^" + ip_0_255 + "\\." + ip_0_255 + "\\." + ip_0_255 + "\\." + ip_0_255 + " [^ ]+ [^ ]+ " + 
                       "\\[" + day + "\\/\\w{3}\\/\\d{4}\\:" + hour + "\\:" + mi_se + "\\:" + mi_se + " (\\+|\\-)\\d+\\] " +
                       "\"\\w+" + "(.*)" + prendreExtenstion + " HTTP/\\d+\\.\\d+\" \\d+ (\\d+|-) \"[^ |\"]+\" \"[^\"]+\"$");
 
-        //int dem = 0;
         Graph graph;
 
-        //ofstream f("huy2.txt");
         while (getline(fileStream, readLine)) {
+            // if readline match with regular expressions of line
             if (regex_match(readLine, regLine)) {
-                //dem++;
                 Request r(readLine);
                 bool ok = true;
+
+                // Exclude all of file image, style, javascript
                 if (exclude) {
                     string rURL = r.GetRequestURL();
                     string rReferer = r.GetRefererURL();
@@ -141,6 +173,7 @@ int main(int argc, char *argv[]) {
                         }
                 }
 
+                // Exclude all line contains status code < 200 or > 300. Exemple: 404, 500
                 if (r.GetStatusCode() < 200 || r.GetStatusCode() > 300) {
                     ok = false;
                 }
@@ -149,15 +182,11 @@ int main(int argc, char *argv[]) {
                     graph.AddNode(r.GetRequestURL());
                     graph.AddEdge(r.GetRefererURL(), r.GetRequestURL());
                 }
-                //f << dem << " " << r.GetRequestURL() << " " << r.GetRefererURL() << endl;
-            } else {
-                //cout << readLine << endl;
-            }
+            } 
         }
-        //f.close();
-        //cout << dem << endl;
-        //cout << (stoi(timeSelected)+1) << endl;
+
         if (dotFileName != "") graph.CreateDotFile(dotFileName);
+
         if (timeSelected != "") {
             cout << "Warning : only hits between " << timeSelected << "h to ";
             if (timeSelected == "23") 
@@ -166,7 +195,11 @@ int main(int argc, char *argv[]) {
                 cout << (stoi(timeSelected)+1);
             cout << "h have been taken into account" << endl;
         }
+
+
         graph.Top10NodeHits();
+
+
     } else {
         cerr << "Error - Reading file: " << logFileName << endl;
         fileStream.close();
@@ -175,4 +208,4 @@ int main(int argc, char *argv[]) {
 
 
     return 0;
-}
+} //-------Fin de main

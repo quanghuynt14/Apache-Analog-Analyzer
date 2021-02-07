@@ -1,3 +1,15 @@
+/*************************************************************************
+                           Graph  -  description
+                             -------------------
+    début                : 20/01/2021
+    copyright            : (C) 2021 par Francine Jin et Tran Quang Huy
+    e-mail               : jinfrancine@hotmail.com
+*************************************************************************/
+
+//---------- Réalisation de la classe <Graph> (fichier Graph.cpp) ------------
+
+//---------------------------------------------------------------- INCLUDE
+//-------------------------------------------------------- Include système
 #include <string>
 #include <map>
 #include <iostream>
@@ -6,8 +18,11 @@
 
 using namespace std;
 
+//------------------------------------------------------ Include personnel
 #include "Graph.h"
 
+//----------------------------------------------------------------- PUBLIC
+//-------------------------------------------- Constructeurs - destructeur
 Graph::Graph ( )
 {
 #ifdef MAP
@@ -23,6 +38,7 @@ Graph::~Graph ( )
 #endif
 } //----- Fin de ~Graph
 
+//----------------------------------------------------- Méthodes publiques
 void Graph::AddNode(const string &node) {
     map<string,int>::iterator itNode = nodes.find(node);
     if (itNode == nodes.end()) {
@@ -30,7 +46,7 @@ void Graph::AddNode(const string &node) {
     } else {
         itNode->second++;
     }
-}
+} //----- Fin de AddNode
 
 void Graph::Top10NodeHits() {
     if (nodes.size() == 0) {
@@ -47,7 +63,7 @@ void Graph::Top10NodeHits() {
         }
         cout << it.second << " (" << it.first << " hit" << ((it.first>1)?"s":"") << ")" << endl;
     }
-}
+} //----- Fin de Top10NodeHits
 
 void Graph::AddEdge(const string &nodeA, const string &nodeB) {
     pair<string,string> edge = make_pair(nodeA, nodeB);
@@ -57,7 +73,7 @@ void Graph::AddEdge(const string &nodeA, const string &nodeB) {
     } else {
         itEdge->second++;
     }
-}
+} //----- Fin de AddEdge
 
 void Graph::CreateDotFile(const string &fileName) {
     ofstream dotFile(fileName);
@@ -87,5 +103,5 @@ void Graph::CreateDotFile(const string &fileName) {
     }
     dotFile.close();
     cout << "Dot-file " << fileName << " generated" << endl;
-}
+} //----- Fin de CreateDotFile
 

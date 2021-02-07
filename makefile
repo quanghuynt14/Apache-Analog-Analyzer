@@ -10,8 +10,8 @@ ECHO = @echo
 
 help:
 	$(ECHO) " help    : Display this message"
-	$(ECHO) " debug   : Build debug version of <Analog>"
-	$(ECHO) " release : Build release version of <Analog>"
+	$(ECHO) " debug   : Build debug version of <ApacheLogAnalyzer>"
+	$(ECHO) " release : Build release version of <ApacheLogAnalyzer>"
 	$(ECHO) " tests   : Run all tests"
 	$(ECHO) " clean   : Delete binary files"
 

@@ -1,9 +1,24 @@
+/*************************************************************************
+                           Request  -  description
+                             -------------------
+    début                : 20/01/2021
+    copyright            : (C) 2021 par Francine Jin et Tran Quang Huy
+    e-mail               : jinfrancine@hotmail.com
+*************************************************************************/
+
+//---------- Réalisation de la classe <Request> (fichier Request.cpp) ------------
+
+//---------------------------------------------------------------- INCLUDE
+//-------------------------------------------------------- Include système
 #include <sstream>
 #include <iostream>
 using namespace std;
 
+//------------------------------------------------------ Include personnel
 #include "Request.h"
 
+//----------------------------------------------------------------- PUBLIC
+//-------------------------------------------- Constructeurs - destructeur
 Request::Request(const string &readLine) {
     istringstream iss(readLine);
     iss >> addressIP;
@@ -49,13 +64,14 @@ Request::Request(const string &readLine) {
 
     getline(iss, x, '"');
     getline(iss, browserClient, '"');
-}
+} //----- Fin de Request
 
 Request::~Request()
 {
 
-}
+} //----- Fin de ~Request
 
+//------------------------------------------------- Surcharge d'opérateurs
 ostream& operator<<(ostream& os, const Request& request)
 {
     os << request.addressIP << " ";
@@ -76,4 +92,4 @@ ostream& operator<<(ostream& os, const Request& request)
     os << request.refererURL << " ";
     os << request.browserClient << endl;
     return os;
-}//--------Fin de la surchage de l'operateur <<
+} //--------Fin de la surchage de l'operateur <<
